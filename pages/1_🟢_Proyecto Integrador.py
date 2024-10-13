@@ -170,7 +170,7 @@ with tab_datos:
         # Crear DataFrame
         df_users = pd.DataFrame(users_data)
         # Reordenar las columnas
-        column_order = ['Producto', 'Tipo', 'Cantidad', 'Fecha','Responsable']
+        column_order = ['producto', 'tipo', 'cantidad', 'fecha','responsable']
         df_users = df_users.reindex(columns=column_order)   
 
         st.dataframe(df_users)
