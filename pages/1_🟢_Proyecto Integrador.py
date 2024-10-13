@@ -106,7 +106,7 @@ with tab_Generador:
                 'producto': product['nombre'],
                 'tipo': movement_type,
                 'cantidad': quantity,
-                'fecha': fake.date_this_year(),
+                'fecha': str(fake.date_this_year()),
                 'responsable': fake.name()
             }
             movements.append(movement)
@@ -119,6 +119,7 @@ with tab_Generador:
 
     def add_data_to_firestore(collection, data):
         for item in data:
+            st.write('agregando',item)
             db.collection(collection).add(item)
     
     col1, col2 = st.columns(2)
