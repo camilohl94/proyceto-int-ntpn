@@ -160,27 +160,25 @@ with tab_Generador:
 #Datos
 #----------------------------------------------------------
 with tab_datos:
-    st.write('Esta función muestra datos de usuarios y productos almacenados en una base de datos Firestore, permitiendo una visualización organizada y fácil acceso a la información.')
-    tab_user, tab_prodcutos = st.tabs(["Movimientos_inventario", "Prodcutos"])
-    with tab_user:        
+    tab_movimientos, tab_prodcutos = st.tabs(["Movimientos_inventario", "Prodcutos"])
+    with tab_movimientos:        
         # Obtener datos de una colección de Firestore
-        users = db.collection('movimientos_inventario').stream()
+        movimientos = db.collection('movimientos_inventario').stream()
         # Convertir datos a una lista de diccionarios
-        users_data = [doc.to_dict() for doc in users]
+        movimientos_data = [doc.to_dict() for doc in movimientos]
         # Crear DataFrame
-        df_users = pd.DataFrame(users_data)
+        df_movimientos = pd.DataFrame(movimientos_data)
         # Reordenar las columnas
-        column_order = ['producto', 'tipo', 'cantidad', 'fecha','responsable']
-        df_users = df_users.reindex(columns=column_order)   
-
-        st.dataframe(df_users)
+        column_order_movimientos = ['producto', 'tipo', 'cantidad', 'fecha','responsable']
+        df_movimientos = df_movimientos.reindex(columns=column_order_movimientos)   
+        st.dataframe(df_movimientos)
     with tab_prodcutos:       
-        # Obtener datos de una colección de Firestore
-        users = db.collection('productos').stream()
+        
+        productos = db.collection('productos').stream()
         # Convertir datos a una lista de diccionarios
-        users_data = [doc.to_dict() for doc in users]
+        productos_data = [doc.to_dict() for doc in productos]
         # Crear DataFrame
-        df_products = pd.DataFrame(users_data)
+        df_products = pd.DataFrame(productos_data)
          # Reordenar las columnas
         column_order = ['nombre', 'categoria', 'precio', 'stock']
         df_products = df_products.reindex(columns=column_order)
@@ -201,7 +199,25 @@ with tab_Análisis_Exploratorio:
     * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
     * Otra información importante  
     """)
-    
+
+    st.write('primeras 5 filas de la tabla movimientos')
+    st.dataframe(df_movimientos.head())
+
+    st.write('cantidad de filas y columnas de la tabla movimeientos')
+    st.write(df_movimientos.shape)
+
+    st.write('Tipos de datos de cada columna')
+    st.write(df_movimientos.dtypes)
+
+    st.write('Columnas con valores nulos')
+    st.write(df_movimientos.isnull().sum())
+
+    st.write('Resumen estadistico de las columnas numéricas')
+    st.write(df_movimientos.describe())
+
+    if 'tipo' in df_movimientos.columns:
+        st.write("Frecuencia de valores unicos para 'tipo': ")
+        st.dataframe(df_movimientos['tipo'].value_counts())
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
