@@ -109,6 +109,7 @@ with tab_Generador:
                 'fecha': str(fake.date_this_year()),
                 'responsable': fake.name()
             }
+            print("Movimiento generado:", movement)
             movements.append(movement)
         return movements
 
