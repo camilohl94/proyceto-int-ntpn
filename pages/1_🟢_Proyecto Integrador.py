@@ -57,7 +57,6 @@ with tad_descripcion:
 #Generador de datos
 #----------------------------------------------------------
 with tab_Generador:
-    st.write('Esta función Python genera datos ficticios de productos y movimientos de inventario y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
     
     fake = Faker('es_CO')
 
