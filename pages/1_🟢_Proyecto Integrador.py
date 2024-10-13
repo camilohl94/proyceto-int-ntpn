@@ -57,28 +57,9 @@ with tad_descripcion:
 #Generador de datos
 #----------------------------------------------------------
 with tab_Generador:
-    st.write('Esta función Python genera datos ficticios de usuarios y productos y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
-    # Inicializar Faker para Colombia
+    st.write('Esta función Python genera datos ficticios de productos y movimientos de inventario y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
+    
     fake = Faker('es_CO')
-
-    # Lista de ciudades colombianas
-    ciudades_colombianas = [
-        'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 
-        'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué',
-        'Pasto', 'Manizales', 'Neiva', 'Villavicencio', 'Armenia'
-    ]
-
-    def generate_fake_users(n):
-        users = []
-        for _ in range(n):
-            user = {
-                'nombre': fake.name(),
-                'email': fake.email(),
-                'edad': random.randint(18, 80),
-                'ciudad': random.choice(ciudades_colombianas)
-            }
-            users.append(user)
-        return users
 
     def generate_fake_gym_products(n):
         categories = {
@@ -106,47 +87,31 @@ with tab_Generador:
             
             product = {
                 'nombre': product_type,
-                'precio': round(random.uniform(50000, 2000000), -3),  # Precios en pesos colombianos
+                'precio': round(random.uniform(50000, 2000000), -3),  
                 'categoria': category,
                 'stock': random.randint(0, 50)
             }
             products.append(product)
         return products
 
-        categories = {
-            'Electrónica': [
-                'Celular', 'Portátil', 'Tablet', 'Audífonos', 'Reloj inteligente', 
-                'Cámara digital', 'Parlante Bluetooth', 'Batería portátil', 
-                'Monitor', 'Teclado inalámbrico'
-            ],
-            'Ropa': [
-                'Camiseta', 'Jean', 'Vestido', 'Chaqueta', 'Zapatos', 
-                'Sudadera', 'Medias', 'Ruana', 'Gorra', 'Falda'
-            ],
-            'Hogar': [
-                'Lámpara', 'Cojín', 'Cortinas', 'Olla', 'Juego de sábanas', 
-                'Toallas', 'Espejo', 'Reloj de pared', 'Tapete', 'Florero'
-            ],
-            'Deportes': [
-                'Balón de fútbol', 'Raqueta de tenis', 'Pesas', 
-                'Colchoneta de yoga', 'Bicicleta', 'Tenis para correr', 
-                'Maletín deportivo', 'Termo', 'Guantes de boxeo', 'Lazo para saltar'
-            ]
-        }
-
-        products = []
+    
+    def generate_fake_inventory_movements(n, products):
+        movements = []
+        movement_types = ['Entrada', 'Salida']
+        
         for _ in range(n):
-            category = random.choice(list(categories.keys()))
-            product_type = random.choice(categories[category])
-            
-            product = {
-                'nombre': product_type,
-                'precio': round(random.uniform(10000, 1000000), -3),  # Precios en pesos colombianos
-                'categoria': category,
-                'stock': random.randint(0, 100)
+            product = random.choice(products)  
+            movement_type = random.choice(movement_types)
+            quantity = random.randint(1, 10)
+            movement = {
+                'producto': product['nombre'],
+                'tipo': movement_type,
+                'cantidad': quantity,
+                'fecha': fake.date_this_year(),
+                'responsable': fake.name()
             }
-            products.append(product)
-        return products
+            movements.append(movement)
+        return movements
 
     def delete_collection(collection_name):
         docs = db.collection(collection_name).get()
@@ -160,28 +125,31 @@ with tab_Generador:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader('Usuarios')
-        num_users = st.number_input('Número de usuarios a generar', min_value=1, max_value=100, value=10)
-        if st.button('Generar y Añadir Usuarios'):
-            with st.spinner('Eliminando usuarios existentes...'):
-                delete_collection('usuarios')
-            with st.spinner('Generando y añadiendo nuevos usuarios...'):
-                users = generate_fake_users(num_users)
-                add_data_to_firestore('usuarios', users)
-            st.success(f'{num_users} usuarios añadidos a Firestore')
-            st.dataframe(pd.DataFrame(users))
-
-    with col2:
         st.subheader('Productos')
         num_products = st.number_input('Número de productos a generar', min_value=1, max_value=100, value=10)
         if st.button('Generar y Añadir Productos'):
             with st.spinner('Eliminando productos existentes...'):
                 delete_collection('productos')
             with st.spinner('Generando y añadiendo nuevos productos...'):
-                products = generate_fake_products(num_products)
+                products = generate_fake_gym_products(num_products)
                 add_data_to_firestore('productos', products)
             st.success(f'{num_products} productos añadidos a Firestore')
             st.dataframe(pd.DataFrame(products))
+
+    with col2:
+        st.subheader('Movimientos de Inventario')
+        num_movements = st.number_input('Número de movimientos a generar', min_value=1, max_value=100, value=10)
+        if st.button('Generar y Añadir Movimientos'):
+            with st.spinner('Eliminando movimientos existentes...'):
+                delete_collection('movimientos_inventario')
+            with st.spinner('Generando y añadiendo nuevos movimientos...'):
+                products = db.collection('productos').get()  # Obtén los productos de Firestore
+                product_list = [{'nombre': p.to_dict()['nombre']} for p in products]
+                movements = generate_fake_inventory_movements(num_movements, product_list)
+                add_data_to_firestore('movimientos_inventario', movements)
+            st.success(f'{num_movements} movimientos añadidos a Firestore')
+            st.dataframe(pd.DataFrame(movements))
+
 
 #----------------------------------------------------------
 #Datos
