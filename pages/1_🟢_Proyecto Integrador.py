@@ -143,11 +143,17 @@ with tab_Generador:
                 delete_collection('movimientos_inventario')
             with st.spinner('Generando y añadiendo nuevos movimientos...'):
                 products = db.collection('productos').get()  # Obtén los productos de Firestore
-                product_list = [{'nombre': p.to_dict()['nombre']} for p in products]
-                movements = generate_fake_inventory_movements(num_movements, product_list)
-                add_data_to_firestore('movimientos_inventario', movements)
-            st.success(f'{num_movements} movimientos añadidos a Firestore')
-            st.dataframe(pd.DataFrame(movements))
+               
+
+                if not products:
+                    st.warning('No hay productos disponibles en firestore.')
+                else:
+                    product_list=[{'nombre': p.to_dict()['nombre']} for p in products]
+                    movements = generate_fake_inventory_movements(num_movements,product_list)
+                    add_data_to_firestore('movimientos_inventario',movements)
+                    st.success(f'{num_movements} movimientos añadidos a firestore')
+                    st.dataframe(pd.DataFrame(movements))
+
 
 
 #----------------------------------------------------------
