@@ -119,7 +119,6 @@ with tab_Generador:
 
     def add_data_to_firestore(collection, data):
         for item in data:
-            st.write('agregando',item)
             db.collection(collection).add(item)
     
     col1, col2 = st.columns(2)
