@@ -142,7 +142,7 @@ with tab_Generador:
             with st.spinner('Eliminando movimientos existentes...'):
                 delete_collection('movimientos_inventario')
             with st.spinner('Generando y añadiendo nuevos movimientos...'):
-                products = db.collection('productos').get()  # Obtén los productos de Firestore
+                products = db.collection('productos').get() 
                
 
                 if not products:
