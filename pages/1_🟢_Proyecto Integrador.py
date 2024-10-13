@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd  
 import firebase_admin  
 from firebase_admin import credentials, firestore  
+import datetime  # Para manejar fechas
 
 st.set_page_config(layout="wide")
 
@@ -11,62 +12,45 @@ st.subheader("Proyecto Integrador")
 
 # Verificar si ya existe una instancia de la aplicación
 if not firebase_admin._apps:  
-    # Cargar las credenciales de Firebase desde los secretos de Streamlit
     firebase_credentials = st.secrets["FIREBASE_CREDENTIALS"]  
-    # Convertir las credenciales a un diccionario Python
     secrets_dict = firebase_credentials.to_dict()  
-    # Crear un objeto de credenciales usando el diccionario 
     cred = credentials.Certificate(secrets_dict)  
-    # Inicializar la aplicación de Firebase con las credenciales
     app = firebase_admin.initialize_app(cred)
 
 # Obtener el cliente de Firestore
 db = firestore.client()
 
-
-tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico, tab_ventas, tab_dashboard = st.tabs([
+    "Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico", "Ventas", "Dashboard"
+])
 
 #----------------------------------------------------------
-#Generador de datos
+# Descripción
 #----------------------------------------------------------
-with tad_descripcion:      
-
+with tad_descripcion:
     st.markdown('''   
-
     ### Introducción
-
-    -   ¿Qué es el proyecto?
-    -   ¿Cuál es el objetivo principal?
-    -   ¿Por qué es importante?
-
+    - ¿Qué es el proyecto?
+    - ¿Cuál es el objetivo principal?
+    - ¿Por qué es importante?
     ### Desarrollo
-
-    -   Explicación detallada del proyecto
-    -   Procedimiento utilizado
-    -   Resultados obtenidos
-
+    - Explicación detallada del proyecto
+    - Procedimiento utilizado
+    - Resultados obtenidos
     ### Conclusión
-
-    -   Resumen de los resultados
-    -   Logros alcanzados
-    -   Dificultades encontradas
-    -   Aportes personales
+    - Resumen de los resultados
+    - Logros alcanzados
+    - Dificultades encontradas
+    - Aportes personales
     ''')
 
 #----------------------------------------------------------
-#Generador de datos
+# Generador de datos
 #----------------------------------------------------------
 with tab_Generador:
-    st.write('Esta función Python genera datos ficticios de usuarios y productos y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
-    # Inicializar Faker para Colombia
+    st.write('Genera datos ficticios de usuarios y productos y los carga en Firestore.')
     fake = Faker('es_CO')
-
-    # Lista de ciudades colombianas
-    ciudades_colombianas = [
-        'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 
-        'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué',
-        'Pasto', 'Manizales', 'Neiva', 'Villavicencio', 'Armenia'
-    ]
+    ciudades_colombianas = ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena']
 
     def generate_fake_users(n):
         users = []
@@ -82,34 +66,15 @@ with tab_Generador:
 
     def generate_fake_products(n):
         categories = {
-            'Electrónica': [
-                'Celular', 'Portátil', 'Tablet', 'Audífonos', 'Reloj inteligente', 
-                'Cámara digital', 'Parlante Bluetooth', 'Batería portátil', 
-                'Monitor', 'Teclado inalámbrico'
-            ],
-            'Ropa': [
-                'Camiseta', 'Jean', 'Vestido', 'Chaqueta', 'Zapatos', 
-                'Sudadera', 'Medias', 'Ruana', 'Gorra', 'Falda'
-            ],
-            'Hogar': [
-                'Lámpara', 'Cojín', 'Cortinas', 'Olla', 'Juego de sábanas', 
-                'Toallas', 'Espejo', 'Reloj de pared', 'Tapete', 'Florero'
-            ],
-            'Deportes': [
-                'Balón de fútbol', 'Raqueta de tenis', 'Pesas', 
-                'Colchoneta de yoga', 'Bicicleta', 'Tenis para correr', 
-                'Maletín deportivo', 'Termo', 'Guantes de boxeo', 'Lazo para saltar'
-            ]
+            'Deportes': ['Pesas', 'Colchoneta de yoga', 'Bicicleta', 'Tenis para correr', 'Guantes de boxeo']
         }
-
         products = []
         for _ in range(n):
             category = random.choice(list(categories.keys()))
             product_type = random.choice(categories[category])
-            
             product = {
                 'nombre': product_type,
-                'precio': round(random.uniform(10000, 1000000), -3),  # Precios en pesos colombianos
+                'precio': round(random.uniform(10000, 1000000), -3),
                 'categoria': category,
                 'stock': random.randint(0, 100)
             }
@@ -124,18 +89,16 @@ with tab_Generador:
     def add_data_to_firestore(collection, data):
         for item in data:
             db.collection(collection).add(item)
-    
+
     col1, col2 = st.columns(2)
 
     with col1:
         st.subheader('Usuarios')
         num_users = st.number_input('Número de usuarios a generar', min_value=1, max_value=100, value=10)
         if st.button('Generar y Añadir Usuarios'):
-            with st.spinner('Eliminando usuarios existentes...'):
-                delete_collection('usuarios')
-            with st.spinner('Generando y añadiendo nuevos usuarios...'):
-                users = generate_fake_users(num_users)
-                add_data_to_firestore('usuarios', users)
+            delete_collection('usuarios')
+            users = generate_fake_users(num_users)
+            add_data_to_firestore('usuarios', users)
             st.success(f'{num_users} usuarios añadidos a Firestore')
             st.dataframe(pd.DataFrame(users))
 
@@ -143,81 +106,84 @@ with tab_Generador:
         st.subheader('Productos')
         num_products = st.number_input('Número de productos a generar', min_value=1, max_value=100, value=10)
         if st.button('Generar y Añadir Productos'):
-            with st.spinner('Eliminando productos existentes...'):
-                delete_collection('productos')
-            with st.spinner('Generando y añadiendo nuevos productos...'):
-                products = generate_fake_products(num_products)
-                add_data_to_firestore('productos', products)
+            delete_collection('productos')
+            products = generate_fake_products(num_products)
+            add_data_to_firestore('productos', products)
             st.success(f'{num_products} productos añadidos a Firestore')
             st.dataframe(pd.DataFrame(products))
 
 #----------------------------------------------------------
-#Datos
+# Datos
 #----------------------------------------------------------
 with tab_datos:
-    st.write('Esta función muestra datos de usuarios y productos almacenados en una base de datos Firestore, permitiendo una visualización organizada y fácil acceso a la información.')
-    tab_user, tab_prodcutos = st.tabs(["Usuarios", "Prodcutos"])
+    st.write('Visualiza los datos de usuarios y productos almacenados en Firestore.')
+    tab_user, tab_prodcutos = st.tabs(["Usuarios", "Productos"])
     with tab_user:        
-        # Obtener datos de una colección de Firestore
         users = db.collection('usuarios').stream()
-        # Convertir datos a una lista de diccionarios
         users_data = [doc.to_dict() for doc in users]
-        # Crear DataFrame
         df_users = pd.DataFrame(users_data)
-        # Reordenar las columnas
-        column_order = ['nombre', 'email', 'edad', 'ciudad']
-        df_users = df_users.reindex(columns=column_order)   
-
+        df_users = df_users[['nombre', 'email', 'edad', 'ciudad']]   
         st.dataframe(df_users)
+
     with tab_prodcutos:       
-        # Obtener datos de una colección de Firestore
-        users = db.collection('productos').stream()
-        # Convertir datos a una lista de diccionarios
-        users_data = [doc.to_dict() for doc in users]
-        # Crear DataFrame
-        df_products = pd.DataFrame(users_data)
-         # Reordenar las columnas
-        column_order = ['nombre', 'categoria', 'precio', 'stock']
-        df_products = df_products.reindex(columns=column_order)
-        
+        products = db.collection('productos').stream()
+        products_data = [doc.to_dict() for doc in products]
+        df_products = pd.DataFrame(products_data)
+        df_products = df_products[['nombre', 'categoria', 'precio', 'stock']]
         st.dataframe(df_products)
 
 #----------------------------------------------------------
-#Analítica 1
+# Ventas
 #----------------------------------------------------------
-with tab_Análisis_Exploratorio:    
-    st.title("Análisis Exploratorio")
-    st.markdown("""
-    * Muestra las primeras 5 filas del DataFrame.  **(df.head())**
-    * Muestra la cantidad de filas y columnas del DataFrame.  **(df.shape)**
-    * Muestra los tipos de datos de cada columna.  **(df.dtypes)**
-    * Identifica y muestra las columnas con valores nulos. **(df.isnull().sum())**
-    * Muestra un resumen estadístico de las columnas numéricas.  **(df.describe())**
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-    * Otra información importante  
-    """)
+with tab_ventas:
+    st.subheader("Registro de Ventas")
     
-#----------------------------------------------------------
-#Analítica 2
-#----------------------------------------------------------
-with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
-        st.markdown("""
-        * Permite filtrar datos usando condiciones simples. **(df[df['columna'] == 'valor'])**
-        * Permite seleccionar una columna y un valor para el filtro. **(st.selectbox, st.text_input)**
-        * Permite elegir un operador de comparación (igual, diferente, mayor que, menor que). **(st.radio)**
-        * Muestra los datos filtrados en una tabla. **(st.dataframe)** 
-        """)
+    def register_sale(product_id, quantity_sold):
+        product_ref = db.collection('productos').document(product_id)
+        product = product_ref.get().to_dict()
+        new_stock = max(product['stock'] - quantity_sold, 0)
+        product_ref.update({'stock': new_stock})
+        
+        sale = {
+            'producto_id': product_id,
+            'cantidad': quantity_sold,
+            'fecha': datetime.datetime.now(),
+            'precio_total': product['precio'] * quantity_sold
+        }
+        db.collection('ventas').add(sale)
+        return sale
+    
+    product_id = st.text_input('ID del Producto')
+    quantity_sold = st.number_input('Cantidad Vendida', min_value=1)
+    if st.button('Registrar Venta'):
+        sale = register_sale(product_id, quantity_sold)
+        st.write(f"Venta registrada: {sale}")
 
 #----------------------------------------------------------
-#Analítica 2
+# Dashboard
 #----------------------------------------------------------
-with tab_Filtro_Final_Dinámico:
-        st.title("Filtro Final Dinámico")
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
+with tab_dashboard:
+    st.title("Dashboard del Inventario y Ventas")
 
+    def get_inventory_statistics():
+        total_products = db.collection('productos').get().size
+        low_stock_products = db.collection('productos').where('stock', '<', 5).get().size
+        total_sales = db.collection('ventas').get().size
+        total_income = sum([sale.to_dict()['precio_total'] for sale in db.collection('ventas').get()])
+        return total_products, low_stock_products, total_sales, total_income
 
+    total_products, low_stock_products, total_sales, total_income = get_inventory_statistics()
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric('Total Productos', total_products)
+    col2.metric('Productos con Bajo Stock', low_stock_products)
+    col3.metric('Total Ventas', total_sales)
+    col4.metric('Total Ingresos', total_income)
+
+    st.subheader('Productos con Bajo Stock')
+    low_stock_products = db.collection('productos').where('stock', '<', 5).stream()
+    low_stock_data = [doc.to_dict() for doc in low_stock_products]
+    if low_stock_data:
+        st.dataframe(pd.DataFrame(low_stock_data))
+    else:
+        st.write("No hay productos con stock bajo.")
