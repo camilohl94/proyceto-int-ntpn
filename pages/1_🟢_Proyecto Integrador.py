@@ -238,6 +238,56 @@ with tab_Análisis_Exploratorio:
             else:
                 st.warning("La columna 'tipo' no existe en el DataFrame.")
 
+
+    st.title("Análisis Exploratorio tabla productos")
+    st.markdown("""
+    Selecciona la operación que deseas realizar con la tabla de productos:
+    """)
+
+    # Lista de opciones
+    opciones = [
+        'Mostrar las primeras 5 filas', 
+        'Cantidad de filas y columnas', 
+        'Tipos de datos de cada columna', 
+        'Mostrar columnas con valores nulos', 
+        'Resumen estadístico de las columnas numéricas', 
+        'Frecuencia de valores únicos para "tipo"'
+    ]
+    
+    # Crear el selectbox para elegir una opción
+    opcion_seleccionada = st.selectbox('Elige una opción:', opciones)
+
+    if df_products.empty:
+        st.warning('No hay datos para mostrar.')
+    else:
+        # Mostrar datos según la opción seleccionada
+        if opcion_seleccionada == 'Mostrar las primeras 5 filas':
+            st.write('Primeras 5 filas de la tabla movimientos:')
+            st.dataframe(df_products.head())
+
+        elif opcion_seleccionada == 'Cantidad de filas y columnas':
+            st.write('Cantidad de filas y columnas de la tabla movimientos:')
+            st.write(df_products.shape)
+
+        elif opcion_seleccionada == 'Tipos de datos de cada columna':
+            st.write('Tipos de datos de cada columna:')
+            st.write(df_products.dtypes)
+
+        elif opcion_seleccionada == 'Mostrar columnas con valores nulos':
+            st.write('Columnas con valores nulos:')
+            st.write(df_products.isnull().sum())
+
+        elif opcion_seleccionada == 'Resumen estadístico de las columnas numéricas':
+            st.write('Resumen estadístico de las columnas numéricas:')
+            st.write(df_products.describe())
+
+        elif opcion_seleccionada == 'Frecuencia de valores únicos para "tipo"':
+            if 'categoria' in df_movimientos.columns:
+                st.write("Frecuencia de valores únicos para 'tipo':")
+                st.dataframe(df_products['categoria'].value_counts())
+            else:
+                st.warning("La columna 'categoria' no existe en el DataFrame.")           
+
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
