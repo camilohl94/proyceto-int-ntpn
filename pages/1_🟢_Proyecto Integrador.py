@@ -188,40 +188,39 @@ with tab_datos:
 #----------------------------------------------------------
 #Analítica 1
 #----------------------------------------------------------
-with tab_Análisis_Exploratorio:    
-    st.title("Análisis Exploratorio tabla movimientos")
-    st.markdown("""
-    * Muestra las primeras 5 filas del DataFrame.  **(df.head())**
-    * Muestra la cantidad de filas y columnas del DataFrame.  **(df.shape)**
-    * Muestra los tipos de datos de cada columna.  **(df.dtypes)**
-    * Identifica y muestra las columnas con valores nulos. **(df.isnull().sum())**
-    * Muestra un resumen estadístico de las columnas numéricas.  **(df.describe())**
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-    * Otra información importante  
-    """)
-    if df_movimientos.empty:
-        st.warning('No hay datos para Mostrar')
+with tab_Análisis_Exploratorio:   
+    if opcion_seleccionada == "Análisis Exploratorio":
+        st.title("Análisis Exploratorio")
+        st.markdown("""
+        * Muestra las primeras 5 filas del DataFrame.
+        * Muestra la cantidad de filas y columnas del DataFrame.
+        * Muestra los tipos de datos de cada columna.
+        * Identifica y muestra las columnas con valores nulos.
+        * Muestra un resumen estadístico de las columnas numéricas.
+        * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada.
+        """)
 
-    else:
+        if df_movimientos.empty:
+            st.warning("No hay datos en el DataFrame de movimientos.")
+        else:
+            st.write('Primeras 5 filas de la tabla movimientos')
+            st.dataframe(df_movimientos.head())
 
-        st.write('primeras 5 filas de la tabla movimientos')
-        st.dataframe(df_movimientos.head())
+            st.write('Cantidad de filas y columnas de la tabla movimientos')
+            st.write(df_movimientos.shape)
 
-        st.write('cantidad de filas y columnas de la tabla movimeientos')
-        st.write(df_movimientos.shape)
+            st.write('Tipos de datos de cada columna')
+            st.write(df_movimientos.dtypes)
 
-        st.write('Tipos de datos de cada columna')
-        st.write(df_movimientos.dtypes)
+            st.write('Columnas con valores nulos')
+            st.write(df_movimientos.isnull().sum())
 
-        st.write('Columnas con valores nulos')
-        st.write(df_movimientos.isnull().sum())
+            st.write('Resumen estadístico de las columnas numéricas')
+            st.write(df_movimientos.describe())
 
-        st.write('Resumen estadistico de las columnas numéricas')
-        st.write(df_movimientos.describe())
-
-        if 'tipo' in df_movimientos.columns:
-            st.write("Frecuencia de valores unicos para 'tipo': ")
-            st.dataframe(df_movimientos['tipo'].value_counts())
+            if 'tipo' in df_movimientos.columns:
+                st.write("Frecuencia de valores únicos para 'tipo':")
+                st.dataframe(df_movimientos['tipo'].value_counts())
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
