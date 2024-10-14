@@ -160,7 +160,7 @@ with tab_Generador:
 #Datos
 #----------------------------------------------------------
 with tab_datos:
-    tab_movimientos, tab_prodcutos = st.tabs(["Movimientos_inventario", "Prodcutos"])
+    tab_movimientos, tab_prodcutos = st.tabs(["Movimientos", "Prodcutos"])
     with tab_movimientos:        
         # Obtener datos de una colección de Firestore
         movimientos = db.collection('movimientos_inventario').stream()
