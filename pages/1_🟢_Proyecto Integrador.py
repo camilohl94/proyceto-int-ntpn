@@ -188,39 +188,56 @@ with tab_datos:
 #----------------------------------------------------------
 #Analítica 1
 #----------------------------------------------------------
-with tab_Análisis_Exploratorio:   
-    if opcion_seleccionada == "Análisis Exploratorio":
-        st.title("Análisis Exploratorio")
-        st.markdown("""
-        * Muestra las primeras 5 filas del DataFrame.
-        * Muestra la cantidad de filas y columnas del DataFrame.
-        * Muestra los tipos de datos de cada columna.
-        * Identifica y muestra las columnas con valores nulos.
-        * Muestra un resumen estadístico de las columnas numéricas.
-        * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada.
-        """)
+with tab_Análisis_Exploratorio:    
+    st.title("Análisis Exploratorio tabla movimientos")
+    st.markdown("""
+    Selecciona la operación que deseas realizar con la tabla de movimientos:
+    """)
 
-        if df_movimientos.empty:
-            st.warning("No hay datos en el DataFrame de movimientos.")
-        else:
-            st.write('Primeras 5 filas de la tabla movimientos')
+    # Lista de opciones
+    opciones = [
+        'Mostrar las primeras 5 filas', 
+        'Cantidad de filas y columnas', 
+        'Tipos de datos de cada columna', 
+        'Mostrar columnas con valores nulos', 
+        'Resumen estadístico de las columnas numéricas', 
+        'Frecuencia de valores únicos para "tipo"'
+    ]
+    
+    # Crear el selectbox para elegir una opción
+    opcion_seleccionada = st.selectbox('Elige una opción:', opciones)
+
+    if df_movimientos.empty:
+        st.warning('No hay datos para mostrar.')
+    else:
+        # Mostrar datos según la opción seleccionada
+        if opcion_seleccionada == 'Mostrar las primeras 5 filas':
+            st.write('Primeras 5 filas de la tabla movimientos:')
             st.dataframe(df_movimientos.head())
 
-            st.write('Cantidad de filas y columnas de la tabla movimientos')
+        elif opcion_seleccionada == 'Cantidad de filas y columnas':
+            st.write('Cantidad de filas y columnas de la tabla movimientos:')
             st.write(df_movimientos.shape)
 
-            st.write('Tipos de datos de cada columna')
+        elif opcion_seleccionada == 'Tipos de datos de cada columna':
+            st.write('Tipos de datos de cada columna:')
             st.write(df_movimientos.dtypes)
 
-            st.write('Columnas con valores nulos')
+        elif opcion_seleccionada == 'Mostrar columnas con valores nulos':
+            st.write('Columnas con valores nulos:')
             st.write(df_movimientos.isnull().sum())
 
-            st.write('Resumen estadístico de las columnas numéricas')
+        elif opcion_seleccionada == 'Resumen estadístico de las columnas numéricas':
+            st.write('Resumen estadístico de las columnas numéricas:')
             st.write(df_movimientos.describe())
 
+        elif opcion_seleccionada == 'Frecuencia de valores únicos para "tipo"':
             if 'tipo' in df_movimientos.columns:
                 st.write("Frecuencia de valores únicos para 'tipo':")
                 st.dataframe(df_movimientos['tipo'].value_counts())
+            else:
+                st.warning("La columna 'tipo' no existe en el DataFrame.")
+
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
