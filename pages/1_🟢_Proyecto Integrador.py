@@ -189,7 +189,7 @@ with tab_datos:
 #Analítica 1
 #----------------------------------------------------------
 with tab_Análisis_Exploratorio:    
-    st.title("Análisis Exploratorio")
+    st.title("Análisis Exploratorio tabla movimientos")
     st.markdown("""
     * Muestra las primeras 5 filas del DataFrame.  **(df.head())**
     * Muestra la cantidad de filas y columnas del DataFrame.  **(df.shape)**
@@ -199,25 +199,29 @@ with tab_Análisis_Exploratorio:
     * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
     * Otra información importante  
     """)
+    if df_movimientos.empty:
+        st.warning('No hay datos para Mostrar')
 
-    st.write('primeras 5 filas de la tabla movimientos')
-    st.dataframe(df_movimientos.head())
+    else:
 
-    st.write('cantidad de filas y columnas de la tabla movimeientos')
-    st.write(df_movimientos.shape)
+        st.write('primeras 5 filas de la tabla movimientos')
+        st.dataframe(df_movimientos.head())
 
-    st.write('Tipos de datos de cada columna')
-    st.write(df_movimientos.dtypes)
+        st.write('cantidad de filas y columnas de la tabla movimeientos')
+        st.write(df_movimientos.shape)
 
-    st.write('Columnas con valores nulos')
-    st.write(df_movimientos.isnull().sum())
+        st.write('Tipos de datos de cada columna')
+        st.write(df_movimientos.dtypes)
 
-    st.write('Resumen estadistico de las columnas numéricas')
-    st.write(df_movimientos.describe())
+        st.write('Columnas con valores nulos')
+        st.write(df_movimientos.isnull().sum())
 
-    if 'tipo' in df_movimientos.columns:
-        st.write("Frecuencia de valores unicos para 'tipo': ")
-        st.dataframe(df_movimientos['tipo'].value_counts())
+        st.write('Resumen estadistico de las columnas numéricas')
+        st.write(df_movimientos.describe())
+
+        if 'tipo' in df_movimientos.columns:
+            st.write("Frecuencia de valores unicos para 'tipo': ")
+            st.dataframe(df_movimientos['tipo'].value_counts())
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
