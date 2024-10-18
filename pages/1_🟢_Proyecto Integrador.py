@@ -137,7 +137,7 @@ with tab_Generador:
 
     with col2:
         st.subheader('Movimientos de Inventario')
-        num_movements = st.number_input('Número de movimientos a generar', min_value=1, max_value=100, value=10)
+        num_movements = st.number_input('Número de movimientos a generar', min_value=1, max_value=1000, value=10)
         if st.button('Generar y Añadir Movimientos'):
             with st.spinner('Eliminando movimientos existentes...'):
                 delete_collection('movimientos_inventario')
