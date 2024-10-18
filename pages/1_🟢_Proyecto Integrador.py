@@ -340,13 +340,14 @@ with tab_Filtrado_Básico:
                 elif operador_seleccionado == 'Menor que':
                     df_filtrado = df[df[columna_seleccionada] < valor_filtro]
 
+                # Guardar el DataFrame filtrado en el session_state
+                st.session_state['df_filtrado'] = df_filtrado
+
                 st.write(f'Datos filtrados por {columna_seleccionada} {operador_seleccionado} {valor_filtro} ({nombre_tabla}):')
                 st.dataframe(df_filtrado)
 
             except ValueError:
                 st.error(f'El valor de filtro introducido no es válido para la columna {columna_seleccionada} en la tabla {nombre_tabla}.')
-
-
 
 
 #----------------------------------------------------------
