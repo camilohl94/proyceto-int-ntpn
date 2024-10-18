@@ -296,23 +296,100 @@ with tab_Análisis_Exploratorio:
 #Analítica 2
 #----------------------------------------------------------
 with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
-        st.markdown("""
-        * Permite filtrar datos usando condiciones simples. **(df[df['columna'] == 'valor'])**
-        * Permite seleccionar una columna y un valor para el filtro. **(st.selectbox, st.text_input)**
-        * Permite elegir un operador de comparación (igual, diferente, mayor que, menor que). **(st.radio)**
-        * Muestra los datos filtrados en una tabla. **(st.dataframe)** 
-        """)
+    st.title("Filtro Básico")
+    st.markdown("""
+    * Permite filtrar datos usando condiciones simples.
+    * Selecciona una tabla, luego una columna, un valor de filtro y un operador de comparación.
+    * Muestra los datos filtrados en una tabla.
+    """)
+
+    # Crear un selectbox para que el usuario elija la tabla
+    tabla_seleccionada = st.selectbox('Selecciona la tabla para aplicar el filtro:', ['Movimientos', 'Productos'])
+
+    # Selección del DataFrame según la tabla seleccionada
+    if tabla_seleccionada == 'Movimientos':
+        df = df_movimientos
+        nombre_tabla = "movimientos"
+    else:
+        df = df_products
+        nombre_tabla = "productos"
+
+    if df.empty:
+        st.warning(f'No hay datos disponibles para filtrar en la tabla {nombre_tabla}.')
+    else:
+        columnas = df.columns.tolist()
+        columna_seleccionada = st.selectbox(f'Selecciona una columna para filtrar ({nombre_tabla}):', columnas)
+
+        valor_filtro = st.text_input(f'Introduce el valor para filtrar la columna {columna_seleccionada} ({nombre_tabla}):')
+
+        operadores = ['Igual', 'Diferente', 'Mayor que', 'Menor que']
+        operador_seleccionado = st.radio(f'Selecciona el operador de comparación ({nombre_tabla}):', operadores)
+
+        if valor_filtro:
+            try:
+                # Convertir el valor de filtro si es numérico
+                valor_filtro = float(valor_filtro) if valor_filtro.replace('.', '', 1).isdigit() else valor_filtro
+
+                # Aplicar el filtro según el operador seleccionado
+                if operador_seleccionado == 'Igual':
+                    df_filtrado = df[df[columna_seleccionada] == valor_filtro]
+                elif operador_seleccionado == 'Diferente':
+                    df_filtrado = df[df[columna_seleccionada] != valor_filtro]
+                elif operador_seleccionado == 'Mayor que':
+                    df_filtrado = df[df[columna_seleccionada] > valor_filtro]
+                elif operador_seleccionado == 'Menor que':
+                    df_filtrado = df[df[columna_seleccionada] < valor_filtro]
+
+                st.write(f'Datos filtrados por {columna_seleccionada} {operador_seleccionado} {valor_filtro} ({nombre_tabla}):')
+                st.dataframe(df_filtrado)
+
+            except ValueError:
+                st.error(f'El valor de filtro introducido no es válido para la columna {columna_seleccionada} en la tabla {nombre_tabla}.')
+
+
+
 
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
-        st.title("Filtro Final Dinámico")
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
+    st.title("Filtro Final Dinámico")
+    st.markdown("""
+    * Muestra un resumen dinámico del DataFrame filtrado. 
+    * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
+    * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
+    """)
+
+    # Comprobar si ya existe un DataFrame filtrado en las pestañas anteriores (df_filtrado_movimientos o df_filtrado_productos)
+    if 'df_filtrado' in st.session_state:
+        df_final = st.session_state['df_filtrado']
+
+        if df_final.empty:
+            st.warning('No hay datos filtrados para mostrar.')
+        else:
+            st.write(f"Resumen del DataFrame filtrado:")
+            st.write(f"Total de filas después del filtro: {df_final.shape[0]}")
+            st.write(f"Total de columnas: {df_final.shape[1]}")
+
+            # Mostrar la tabla filtrada
+            st.dataframe(df_final)
+
+            # Mostrar estadísticas
+            st.write("Resumen estadístico de las columnas numéricas:")
+            st.write(df_final.describe())
+
+            # Mostrar gráficos si hay datos suficientes
+            if df_final.select_dtypes(include='number').shape[1] > 0:
+                st.write("Gráfico de distribución de las columnas numéricas:")
+                st.bar_chart(df_final.select_dtypes(include='number'))
+
+            if 'categoria' in df_final.columns or 'tipo' in df_final.columns:
+                col_categ = 'categoria' if 'categoria' in df_final.columns else 'tipo'
+                st.write(f"Frecuencia de valores únicos para '{col_categ}':")
+                st.bar_chart(df_final[col_categ].value_counts())
+
+    else:
+        st.warning("No se han aplicado filtros aún. Usa las pestañas anteriores para aplicar filtros y ver los resultados aquí.")
+
 
 
