@@ -24,7 +24,7 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 
-tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio,  tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtro Final Dinámico"])
 
 #----------------------------------------------------------
 #Generador de datos
@@ -292,11 +292,9 @@ with tab_Análisis_Exploratorio:
                 st.warning("La columna 'categoria' no existe en el DataFrame de productos.")
         
 
-#----------------------------------------------------------
-#Analítica 2
-#----------------------------------------------------------
-with tab_Filtrado_Básico:
-    st.title("Filtro Básico")
+
+with tab_Filtro_Final_Dinámico:
+    st.title("Filtro Final Dinámico")
     st.markdown("""
     * Permite filtrar datos usando condiciones simples.
     * Selecciona una tabla, luego una columna, un valor de filtro y un operador de comparación.
@@ -349,19 +347,7 @@ with tab_Filtrado_Básico:
             except ValueError:
                 st.error(f'El valor de filtro introducido no es válido para la columna {columna_seleccionada} en la tabla {nombre_tabla}.')
 
-
-#----------------------------------------------------------
-#Analítica 2
-#----------------------------------------------------------
-with tab_Filtro_Final_Dinámico:
-    st.title("Filtro Final Dinámico")
-    st.markdown("""
-    * Muestra un resumen dinámico del DataFrame filtrado. 
-    * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-    * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-    """)
-
-    # Comprobar si ya existe un DataFrame filtrado en las pestañas anteriores (df_filtrado_movimientos o df_filtrado_productos)
+   
     if 'df_filtrado' in st.session_state:
         df_final = st.session_state['df_filtrado']
 
