@@ -56,6 +56,12 @@ with tad_descripcion:
 #----------------------------------------------------------
 #Generador de datos
 #----------------------------------------------------------
+import random
+from faker import Faker
+
+import random
+from faker import Faker
+
 with tab_Generador:
     
     fake = Faker('es_CO')
@@ -63,35 +69,59 @@ with tab_Generador:
     def generate_fake_gym_products(n):
         categories = {
             'Máquinas': [
-                'Bicicleta estática', 'Cinta de correr', 'Máquina de remo', 
-                'Elíptica', 'Máquina de pesas', 'Banco de pesas', 'Polea', 
-                'Máquina Smith', 'Prensa de pierna', 'Escaladora'
-            ],
-            'Accesorios': [
+                'Bicicleta estática', 'Cinta de correr', 'Máquina de remo', 'Elíptica', 
+                'Máquina de pesas', 'Banco de pesas', 'Polea', 'Máquina Smith', 
+                'Prensa de pierna', 'Escaladora', 'Prensa de pecho', 'Máquina de dorsales', 
+                'Multiestación', 'Caminadora eléctrica', 'Máquina de abdominales', 
+                'Máquina de glúteos', 'Stepper', 'Rack de sentadillas', 'Extensión de piernas', 
+                'Flexión de piernas', 'Máquina de abductores', 'Máquina de aductores', 
+                'Máquina de pantorrillas', 'Máquina de isquiotibiales', 'Máquina de gemelos', 
+                'Máquina de prensa de hombros', 'Máquina de remo asistida', 'Máquina de trapecios', 
+                'Máquina de hiperextensiones', 'Máquina de empuje de cadera'
+                ],
+           'Accesorios': [
                 'Mancuernas', 'Pesas rusas', 'Colchoneta de yoga', 'Banda de resistencia', 
-                'Guantes de gimnasio', 'Cuerda para saltar', 'Rueda abdominal', 
-                'Discos de pesas', 'Pesa ajustable', 'Soporte para pesas'
-            ],
+                'Guantes de gimnasio', 'Cuerda para saltar', 'Rueda abdominal', 'Discos de pesas', 
+                'Pesa ajustable', 'Soporte para pesas', 'Rodillo de espuma', 'Step de aerobic', 
+                'Tobilleras con peso', 'Bola de estabilidad', 'Cinturón de levantamiento', 
+                'Protector de muñeca', 'Pesa de tobillo', 'Bandas elásticas', 'Agarres para dominadas', 
+                'Alfombrilla antideslizante', 'Tobilleras ajustables', 'Rueda de equilibrio', 
+                'Barra para dominadas', 'Chaleco con peso', 'Balón medicinal', 'Escalera de agilidad', 
+                'Tobilleras de peso ajustables', 'Arnés para resistencia', 'Soporte para estiramiento', 
+                'Soporte para flexiones'
+                ],
             'Suplementos': [
                 'Proteína en polvo', 'Creatina', 'Aminoácidos BCAA', 'Pre-entreno', 
                 'Multivitamínico', 'Barritas energéticas', 'Glutamina', 'Omega 3', 
-                'Quemadores de grasa', 'Carbohidratos'
-            ]
-        }
+                'Quemadores de grasa', 'Carbohidratos', 'Electrolitos', 'Beta alanina', 
+                'Cafeína', 'Colágeno hidrolizado', 'Proteína vegana', 'Vitaminas B12', 
+                'Ácido fólico', 'Calcio', 'Magnesio', 'Vitamina D', 'ZMA (Zinc y Magnesio)', 
+                'L-arginina', 'MCT Oil', 'Spirulina', 'Extracto de té verde', 'Aceite de pescado', 
+                'Suero de leche', 'Suplemento de electrolitos', 'L-carnitina', 'Ashwagandha'
+                ]
+                 
+         }
 
+        unique_products = set()
         products = []
-        for _ in range(n):
+
+        while len(products) < n and len(unique_products) < sum(len(v) for v in categories.values()):
             category = random.choice(list(categories.keys()))
             product_type = random.choice(categories[category])
             
-            product = {
-                'nombre': product_type,
-                'precio': round(random.uniform(50000, 2000000), -3),  
-                'categoria': category,
-                'stock': random.randint(0, 50)
-            }
-            products.append(product)
+            if product_type not in unique_products:
+                unique_products.add(product_type)
+                product = {
+                    'nombre': product_type,
+                    'precio': round(random.uniform(50000, 2000000), -3),  
+                    'categoria': category,
+                    'stock': random.randint(0, 50)
+                }
+                products.append(product)
+
         return products
+
+
 
     
     def generate_fake_inventory_movements(n, products):
@@ -125,24 +155,24 @@ with tab_Generador:
 
     with col1:
         st.subheader('Productos')
-        num_products = st.number_input('Número de productos a generar', min_value=1, max_value=200, value=10)
+        num_products = st.number_input('Número de productos a generar', min_value=1, max_value=87, value=10)
         if st.button('Generar y Añadir Productos'):
             with st.spinner('Eliminando productos existentes...'):
-                delete_collection('productos')
+                delete_collection('Productos')
             with st.spinner('Generando y añadiendo nuevos productos...'):
                 products = generate_fake_gym_products(num_products)
-                add_data_to_firestore('productos', products)
+                add_data_to_firestore('Productos', products)
             st.success(f'{num_products} productos añadidos a Firestore')
             st.dataframe(pd.DataFrame(products))
 
     with col2:
         st.subheader('Movimientos de Inventario')
-        num_movements = st.number_input('Número de movimientos a generar', min_value=1, max_value=200, value=10)
+        num_movements = st.number_input('Número de movimientos a generar', min_value=1, max_value=100, value=10)
         if st.button('Generar y Añadir Movimientos'):
             with st.spinner('Eliminando movimientos existentes...'):
-                delete_collection('movimientos_inventario')
+                delete_collection('Movimientos')
             with st.spinner('Generando y añadiendo nuevos movimientos...'):
-                products = db.collection('productos').get() 
+                products = db.collection('Productos').get() 
                
 
                 if not products:
@@ -150,7 +180,7 @@ with tab_Generador:
                 else:
                     product_list=[{'nombre': p.to_dict()['nombre']} for p in products]
                     movements = generate_fake_inventory_movements(num_movements,product_list)
-                    add_data_to_firestore('movimientos_inventario',movements)
+                    add_data_to_firestore('Movimientos',movements)
                     st.success(f'{num_movements} movimientos añadidos a firestore')
                     st.dataframe(pd.DataFrame(movements))
 
@@ -163,18 +193,18 @@ with tab_datos:
     tab_movimientos, tab_prodcutos = st.tabs(["Movimientos", "Prodcutos"])
     with tab_movimientos:        
         # Obtener datos de una colección de Firestore
-        movimientos = db.collection('movimientos_inventario').stream()
+        movimientos = db.collection('Movimientos').stream()
         # Convertir datos a una lista de diccionarios
         movimientos_data = [doc.to_dict() for doc in movimientos]
         # Crear DataFrame
         df_movimientos = pd.DataFrame(movimientos_data)
         # Reordenar las columnas
-        column_order_movimientos = ['producto', 'tipo', 'cantidad', 'fecha','responsable']
+        column_order_movimientos = ['producto','cantidad', 'fecha', 'tipo','responsable']
         df_movimientos = df_movimientos.reindex(columns=column_order_movimientos)   
         st.dataframe(df_movimientos)
     with tab_prodcutos:       
         
-        productos = db.collection('productos').stream()
+        productos = db.collection('Productos').stream()
         # Convertir datos a una lista de diccionarios
         productos_data = [doc.to_dict() for doc in productos]
         # Crear DataFrame
