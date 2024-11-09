@@ -35,22 +35,83 @@ with tad_descripcion:
 
     ### Introducción
 
-    -   ¿Qué es el proyecto?
+    -  ¿Qué es el proyecto?
+        El proyecto de sistema de inventario es una iniciativa que busca diseñar, desarrollar e implementar
+        un sistema que permita gestionar y controlar de manera eficiente los bienes y productos de una organizacion. 
+                
     -   ¿Cuál es el objetivo principal?
+         El objetivo principal de un sistema de inventario es optimizar la gestión de existencias para garantizar que
+         los productos estén disponibles cuando se necesiten, minimizando al mismo tiempo costos y desperdicios.
+                
     -   ¿Por qué es importante?
+         La implementación de un sistema de inventario es importante por varias razones:
+        * Mejor control de stock 
+        * Optimización de costos 
+        * Toma de decisiones informada
+        * Mejora en la satisfacción del cliente
+        * Eficiencia operativa
+        * Cumplimiento normativo
+        * Análisis de rendimiento
 
     ### Desarrollo
 
     -   Explicación detallada del proyecto
+        Este sistema incluye la recopilación de datos sobre la cantidad, ubicación y estado de los inventarios,
+        así como la automatización de procesos relacionados con la entrada, salida y seguimiento de los mismos.
+                
     -   Procedimiento utilizado
+        Análisis de Requisitos:
+         * Reunir información sobre las necesidades específicas de la empresa.
+         * identificar las funcionalidades que el sistema debe tener.
+        
+        Diseño del sistema:
+         * Crear un diseño que incluya la estructura de la base de datos, interfaces y flujos de trabajo.
+         * Planificar la arquitectura del sistema y la integración con otros sistemas existentes.
+
+        Desarrollo:
+         * Programar el software utilizando lenguajes y tecnologías apropiadas.
+         * Desarrollar módulos específicos, como gestión de entradas y salidas, reportes y análisis.
+
+        Pruebas: 
+         * Realizar pruebas funcionales y de ususario para asegurarse de que el sistema cumple con los requisitos.
+         * Identificar y corregir errores o problemas antes de la implemetación
+                
     -   Resultados obtenidos
+         Resultados obtenidos
+         Control preciso del inventario: Evita excesos y escasez.
+         Reducción de costos: Minimiza gastos de almacenamiento y deterioro.
+         Optimización del flujo de efectivo: Mantiene niveles óptimos de inversión en inventario.
+         Mejora en la toma de decisiones: Facilita decisiones informadas sobre compras y ventas.
+         Mayor satisfacción del cliente: Asegura disponibilidad de productos.
+         Reducción de pérdidas: Previene vencimientos y deterioros.
+         Automatización: Ahorra tiempo y reduce errores. 
 
     ### Conclusión
 
     -   Resumen de los resultados
+         En conjunto, estos resultados permiten una gestión más eficiente, reducen costos y mejoran la productividad y
+         la competitividad del negocio.
+                
     -   Logros alcanzados
+         Stock óptimo sin excesos ni faltantes.
+         Reducción de costos de almacenamiento y pérdidas.
+         Eficiencia operativa y automatización de tareas.
+         Mejor toma de decisiones con datos en tiempo real.
+         Mayor satisfacción del cliente al asegurar disponibilidad.
+         Estos logros reflejan una gestión de inventario más controlada, rentable y orientada a la satisfacción del cliente.
+                
     -   Dificultades encontradas
+         Errores de registro: Datos incorrectos por errores humanos o técnicos.
+         Integración con otros sistemas: Complejidad para enlazar el inventario con otros procesos, como ventas y contabilidad.
+         Falta de datos en tiempo real: Problemas de actualización que afectan la precisión del inventario.
+                
     -   Aportes personales
+         *Analisis crítico: Identificación de áreas de mejora.
+         *innovación: Propuestas de nuevas funcionalidades.
+         *Resolución de problemas: Manejo de obstaculos durante la implemetación.
+         *Feedback Constructivo: Retroalimentación para mejoras continuas.
+         *Adaptabilidad: Flexibilidad ante cambios en el proyecto.
+         *Compromiso: Dedicación para asegurar el éxito del sistema.
     ''')
 
 #----------------------------------------------------------

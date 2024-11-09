@@ -5,8 +5,7 @@ st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 
 
 # Título y subtítulo
-st.title("Proyecto Integrador: [Nombre del Proyecto]")
-st.subheader("Un Viaje Creativo con [Nombre del Equipo]")
+st.title("Proyecto Integrador: SportStock")
 
 # Imagen de fondo
 image = Image.open("./static/proyecto integrador.png") 
@@ -18,35 +17,34 @@ st.header("Nuestro Equipo")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Juan Carlos Garcia]**")
-    st.write("[Colaborador]")
+    st.image("./static/user.png", width=200)  
+    st.write("**Juan Carlos Garcia**")
+    st.write("Colaborador")
 
 with col2:
     st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Juan Camilo Hernandez]**")
-    st.write("[Colaborador]")
+    st.write("**Juan Camilo Hernandez**")
+    st.write("Colaborador")
     
 with col3:
     st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Duvan Sanchez]**")
-    st.write("[Colaborador]")
+    st.write("**Duvan Sanchez**")
+    st.write("Colaborador")
     
 with col4:
     st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Dayana Castro Villa]**")
-    st.write("[Colaboradora]")
+    st.write("**Dayana Castro Villa**")
+    st.write("Colaboradora")
     
 with col5:
     st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Bibiana Machado]**")
-    st.write("[Colaboradora]")
+    st.write("**Bibiana Machado**")
+    st.write("Colaboradora")
 
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
 st.write("""
-[Escribe aquí una breve descripción del proyecto, incluyendo el objetivo principal, la problemática que aborda y el enfoque que se utiliza. Puedes ser creativo y usar un lenguaje atractivo.]
-""")
+Tiene como objetivo principal optimizar la gestion de los productos, controlar el stock de articulos y mejorar la eficiencia operativa de la tienda.""" )
 
 # Más información
 st.header("Más Información")
