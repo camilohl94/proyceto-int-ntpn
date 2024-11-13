@@ -7,7 +7,7 @@ st.set_page_config(layout="wide")
 
 st.subheader("Análisis y Filtrado de Datos")
 
-tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Análisis_Exploratorio, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtro Final Dinámico"])
 
 #----------------- -----------------------------------------
 #Generador de datos
@@ -142,36 +142,45 @@ with tab_Análisis_Exploratorio:
     if consulta != "Selecciona una consulta":
         mostrar_resultados(df, consulta)
 
-
-
-#----------------------------------------------------------
-#Analítica 2
-#----------------------------------------------------------
-with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
-        st.markdown("""
-        * Permite filtrar datos usando condiciones simples. **(df[df['columna'] == 'valor'])**
-        * Permite seleccionar una columna y un valor para el filtro. **(st.selectbox, st.text_input)**
-        * Permite elegir un operador de comparación (igual, diferente, mayor que, menor que). **(st.radio)**
-        * Muestra los datos filtrados en una tabla. **(st.dataframe)** 
-        """)
- 
-
 #----------------------------------------------------------
 #Analítica 3
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
-        st.title("Filtro Final Dinámico")
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
+    st.title("Filtro Final Dinámico")
+    st.markdown("""
+    * Muestra un resumen dinámico del DataFrame filtrado. 
+    * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
+    * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
+    """)
 
+    # Seleccionar columnas para filtrar
+    columnas_filtrables = st.multiselect('Selecciona las columnas para filtrar:', df.columns)
 
+    # Crear filtros dinámicos
+    filtros = {}
+    for columna in columnas_filtrables:
+        valores_unicos = df[columna].unique()
+        seleccionados = st.multiselect(f'Selecciona los valores para {columna}:', valores_unicos)
+        if seleccionados:
+            filtros[columna] = seleccionados
 
-    
+    # Aplicar filtros al DataFrame
+    df_filtrado = df.copy()
+    for columna, valores in filtros.items():
+        df_filtrado = df_filtrado[df_filtrado[columna].isin(valores)]
 
+    # Mostrar un resumen dinámico del DataFrame filtrado
+    st.write('Resumen del DataFrame filtrado:')
+    st.write(df_filtrado.describe())
 
+    # Mostrar la tabla de datos filtrados
+    st.write('Datos filtrados:')
+    st.dataframe(df_filtrado)
 
-
+    # Mostrar gráficos y estadísticas relevantes
+    st.write('Gráficos y estadísticas:')
+    for columna in df_filtrado.select_dtypes(include=['number']).columns:
+        st.write(f'Distribución de {columna}:')
+        fig, ax = plt.subplots()
+        sns.histplot(data=df_filtrado, x=columna, kde=True)
+        st.pyplot(fig)
