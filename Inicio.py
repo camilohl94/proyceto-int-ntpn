@@ -18,27 +18,27 @@ st.header("Nuestro Equipo")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
+    st.image("./static/Juan-Carlos.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Carlos Garcia]**")
     st.write("[Colaborador]")
 
 with col2:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
+    st.image("./static/Camilo j.png", width=123)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Camilo Hernandez]**")
     st.write("[Colaborador]")
     
 with col3:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
+    st.image("./static/Duban.png", width=123)  # Reemplaza con la ruta de la foto
     st.write("**[Duvan Sanchez]**")
     st.write("[Colaborador]")
     
 with col4:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
+    st.image("./static/Dayana.png", width=150)  # Reemplaza con la ruta de la foto
     st.write("**[Dayana Castro Villa]**")
     st.write("[Colaboradora]")
     
 with col5:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
+    st.image("./static/Bibiana.png", width=175)  # Reemplaza con la ruta de la foto
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
 
