@@ -184,3 +184,7 @@ with tab_Filtro_Final_Dinámico:
         fig, ax = plt.subplots()
         sns.histplot(data=df_filtrado, x=columna, kde=True)
         st.pyplot(fig)
+
+
+
+
