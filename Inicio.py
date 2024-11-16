@@ -23,7 +23,7 @@ with col1:
     st.write("[Colaborador]")
 
 with col2:
-    st.image("./static/Camilo j.png", width=123)  # Reemplaza con la ruta de la foto
+    st.image("./static/Camiloj.png", width=123)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Camilo Hernandez]**")
     st.write("[Colaborador]")
     
@@ -41,7 +41,7 @@ with col5:
     st.image("./static/Bibiana.png", width=175)  # Reemplaza con la ruta de la foto
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
-
+    
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
 st.write("""
