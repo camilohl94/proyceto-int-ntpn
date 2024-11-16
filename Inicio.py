@@ -5,8 +5,7 @@ st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 
 
 # Título y subtítulo
-st.title("Proyecto Integrador: [Nombre del Proyecto]")
-st.subheader("Un Viaje Creativo con [Nombre del Equipo]")
+st.title("Proyecto Integrador: SportStock")
 
 # Imagen de fondo
 image = Image.open("./static/proyecto integrador.png") 
@@ -18,6 +17,7 @@ st.header("Nuestro Equipo")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
+
     st.image("./static/Juan-Carlos.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Carlos Garcia]**")
     st.write("[Colaborador]")
@@ -41,12 +41,11 @@ with col5:
     st.image("./static/Bibiana.png", width=175)  # Reemplaza con la ruta de la foto
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
-    
+
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
 st.write("""
-[Escribe aquí una breve descripción del proyecto, incluyendo el objetivo principal, la problemática que aborda y el enfoque que se utiliza. Puedes ser creativo y usar un lenguaje atractivo.]
-""")
+Tiene como objetivo principal optimizar la gestion de los productos, controlar el stock de articulos y mejorar la eficiencia operativa de la tienda.""" )
 
 # Más información
 st.header("Más Información")
