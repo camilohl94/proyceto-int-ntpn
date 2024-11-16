@@ -23,7 +23,7 @@ with col1:
     st.write("[Colaborador]")
 
 with col2:
-    st.image("./static/Camilo j.png", width=123)  # Reemplaza con la ruta de la foto
+    st.image("./static/Camiloj.png", width=123)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Camilo Hernandez]**")
     st.write("[Colaborador]")
     
@@ -41,30 +41,6 @@ with col5:
     st.image("./static/Bibiana.png", width=175)  # Reemplaza con la ruta de la foto
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
-
-    st.image("./static/user.png", width=200)  
-    st.write("**Juan Carlos Garcia**")
-    st.write("Colaborador")
-
-with col2:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**Juan Camilo Hernandez**")
-    st.write("Colaborador")
-    
-with col3:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**Duvan Sanchez**")
-    st.write("Colaborador")
-    
-with col4:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**Dayana Castro Villa**")
-    st.write("Colaboradora")
-    
-with col5:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**Bibiana Machado**")
-    st.write("Colaboradora")
 
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
