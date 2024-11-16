@@ -378,78 +378,74 @@ with tab_Análisis_Exploratorio:
 #Filtro Final Dinámico Mejorado
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
- st.title("Visualización Dinámica Simplificada")
+    st.title("Visualización Dinámica Simplificada")
 
-st.markdown("""
-**Instrucciones:**
-1. Selecciona una tabla para visualizar.
-2. Elige un tipo de gráfico.
-3. Aplica un filtro opcional (si lo deseas) y observa los resultados.
-""")
+    st.markdown("""
+    **Instrucciones:**
+    1. Selecciona una tabla para visualizar.
+    2. Elige un tipo de gráfico.
+    3. Aplica un filtro opcional (si lo deseas) y observa los resultados.
+    """)
 
-# Selección de tabla
-tabla_seleccionada = st.selectbox(
-    'Selecciona la tabla para visualizar:',
-    options=['Movimientos', 'Productos']
-)
+    # Selección de tabla
+    tabla_seleccionada = st.selectbox(
+        'Selecciona la tabla para visualizar:',
+        options=['Movimientos', 'Productos']
+    )
 
-# Cargar DataFrame
-if tabla_seleccionada == 'Movimientos':
-    df = df_movimientos.copy()  # Asegúrate de tener df_movimientos disponible
-elif tabla_seleccionada == 'Productos':
-    df = df_products.copy()  # Asegúrate de tener df_products disponible
+    if tabla_seleccionada == 'Movimientos':
+        df = df_movimientos.copy()  
+    elif tabla_seleccionada == 'Productos':
+        df = df_products.copy() 
 
-# Verificar si el DataFrame está vacío
-if df.empty:
-    st.warning(f'No hay datos disponibles en la tabla {tabla_seleccionada}.')
-else:
-    # Filtros en columnas
-    col1, col2 = st.columns(2)
+    if df.empty:
+        st.warning(f'No hay datos disponibles en la tabla {tabla_seleccionada}.')
+    else:
+        col1, col2 = st.columns(2)
 
-    with col1:
-        # Selección del tipo de gráfico
-        tipo_grafico = st.selectbox('Selecciona el tipo de gráfico:', ['Barras', 'Línea', 'Puntos', 'Boxplot'])
-    
-    with col2:
-        # Selección de columnas para la gráfica
-        columnas = df.columns.tolist()
-        x_columna = st.selectbox('Selecciona la variable para el eje X:', options=columnas)
-        y_columna = st.selectbox('Selecciona la variable para el eje Y:', options=columnas)
+        with col1:
+            # Selección del tipo de gráfico
+            tipo_grafico = st.selectbox('Selecciona el tipo de gráfico:', ['Barras', 'Línea', 'Puntos', 'Boxplot'])
+        
+        with col2:
+            # Selección de columnas para la gráfica
+            columnas = df.columns.tolist()
+            x_columna = st.selectbox('Selecciona la variable para el eje X:', options=columnas)
+            y_columna = st.selectbox('Selecciona la variable para el eje Y:', options=columnas)
 
-    # Filtro opcional por columna (en base a los valores únicos de la columna)
-    filtro_columna = st.multiselect(f"Filtrar por {x_columna}:", options=['Todos'] + df[x_columna].unique().tolist())
-    
-    # Si se seleccionan filtros, aplicarlos
-    if filtro_columna != ['Todos'] and filtro_columna:
-        df = df[df[x_columna].isin(filtro_columna)]
+        # Filtro opcional por columna
+        filtro_columna = st.multiselect(f"Filtrar por {x_columna}:", options=['Todos'] + df[x_columna].unique().tolist())
+        
+        # Si se seleccionan filtros, aplicarlos
+        if filtro_columna != ['Todos'] and filtro_columna:
+            df = df[df[x_columna].isin(filtro_columna)]
 
-    # Estilos de gráficos con Seaborn
-    estilo_grafico = st.selectbox("Selecciona el estilo del gráfico:", options=['darkgrid', 'whitegrid', 'dark', 'white', 'ticks'])
-    paleta_colores = st.selectbox("Selecciona la paleta de colores:", options=['deep', 'muted', 'bright', 'pastel', 'dark', 'colorblind'])
+        # Estilos de gráficos con Seaborn
+        estilo_grafico = st.selectbox("Selecciona el estilo del gráfico:", options=['darkgrid', 'whitegrid', 'dark', 'white', 'ticks'])
+        paleta_colores = st.selectbox("Selecciona la paleta de colores:", options=['deep', 'muted', 'bright', 'pastel', 'dark', 'colorblind'])
 
-    sns.set_style(estilo_grafico)
-    sns.set_palette(paleta_colores)
+        sns.set_style(estilo_grafico)
+        sns.set_palette(paleta_colores)
 
-    # Crear el gráfico
-    st.subheader("Gráfico de Datos")
-    fig, ax = plt.subplots(figsize=(10, 6))
+        # Crear el gráfico
+        st.subheader("Gráfico de Datos")
+        fig, ax = plt.subplots(figsize=(10, 6))
 
-    if tipo_grafico == 'Barras':
-        sns.barplot(x=x_columna, y=y_columna, data=df, ax=ax)
-    elif tipo_grafico == 'Línea':
-        sns.lineplot(x=x_columna, y=y_columna, data=df, marker='o', ax=ax)
-    elif tipo_grafico == 'Puntos':
-        sns.scatterplot(x=x_columna, y=y_columna, data=df, ax=ax)
-    elif tipo_grafico == 'Boxplot':
-        sns.boxplot(x=x_columna, y=y_columna, data=df, ax=ax)
+        if tipo_grafico == 'Barras':
+            sns.barplot(x=x_columna, y=y_columna, data=df, ax=ax)
+        elif tipo_grafico == 'Línea':
+            sns.lineplot(x=x_columna, y=y_columna, data=df, marker='o', ax=ax)
+        elif tipo_grafico == 'Puntos':
+            sns.scatterplot(x=x_columna, y=y_columna, data=df, ax=ax)
+        elif tipo_grafico == 'Boxplot':
+            sns.boxplot(x=x_columna, y=y_columna, data=df, ax=ax)
 
-    ax.set_xlabel(x_columna)
-    ax.set_ylabel(y_columna)
-    ax.set_title(f'{y_columna} vs {x_columna} ({tipo_grafico})')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    st.pyplot(fig)
+        ax.set_xlabel(x_columna)
+        ax.set_ylabel(y_columna)
+        ax.set_title(f'{y_columna} vs {x_columna} ({tipo_grafico})')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        st.pyplot(fig)
 
-    # Mostrar el DataFrame filtrado debajo de la gráfica
-    st.subheader("Datos Filtrados")
-    st.dataframe(df)
+        st.subheader("Datos Filtrados")
+        st.dataframe(df)
