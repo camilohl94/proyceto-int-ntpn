@@ -5,59 +5,96 @@ from google.oauth2 import service_account
 
 st.set_page_config(layout="wide")
 
-st.subheader("Analizador de Datos de Google Sheets")
+st.subheader("Filtrador de Datos del Metro de Medellín")
 
-st.markdown("""
-Este código lee datos de una hoja de cálculo de Google Sheets llamada "Sheet1", los procesa con Pandas y actualiza una segunda hoja llamada "Sheet2" con nuevos datos. La interfaz de usuario de Streamlit permite al usuario ingresar el ID de la hoja de cálculo y visualizar los datos procesados.            
-    """)   
+st.markdown(""" 
+Tasas de mortalidad según enfermedades respiratorias y circulatorias calculadas en el proyecto 
+Calidad del aire y sus efectos en la salud de la población de los diez municipios del valle de aburrá
+""")
 
-# If modifying these scopes, delete the file token.json.
+st.write('1pyWrBdeFBrwbdnJZ_DHW0MpzXDYWvfux1LouNppqYeM')
+
+# Configuración de Google Sheets API
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+SPREADSHEET_ID = st.text_input("ID hoja de cálculo")
+RANGE1 = "Sheet1!A:E"  
+RANGE2 = "Sheet2!A:E"  
 
-
-# The ID and range of a sample spreadsheet.
-SPREADSHEET_ID = st.text_input("ID  hoja de cálculo")
-RANGE1 = "Sheet1!A:E"
-RANGE2 = "Sheet2!A:E"
-
-google_sheet_credentials = st.secrets["GOOGLE_SHEET_CREDENTIALS"]  
-secrets_dict = google_sheet_credentials.to_dict()     
-creds = None
+# Configuración de credenciales
+google_sheet_credentials = st.secrets["GOOGLE_SHEET_CREDENTIALS"]
+secrets_dict = google_sheet_credentials.to_dict()
 creds = service_account.Credentials.from_service_account_info(secrets_dict, scopes=SCOPES)
 service = build('sheets', 'v4', credentials=creds)
 sheet = service.spreadsheets()
 
 def read_sheet():
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE1).execute()      
+    """Lee los datos de Sheet1"""
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE1).execute()
     values = result.get('values', [])
-    df = pd.DataFrame(values)
-    return df
+    
+    if values:
+        df = pd.DataFrame(values[1:], columns=values[0])
+        return df
+    return pd.DataFrame()
 
 def update_sheet(df):
-    body = {'values': df.values.tolist()}
-    result = sheet.values().update(
-        spreadsheetId=SPREADSHEET_ID, range=RANGE2,
-        valueInputOption="USER_ENTERED", body=body).execute()
-    return result
+    """Actualiza Sheet2 con los datos filtrados"""
+    if not df.empty:
+        try:
+            # Primero limpiamos la hoja 2
+            sheet.values().clear(
+                spreadsheetId=SPREADSHEET_ID,
+                range=RANGE2
+            ).execute()
+            
+            # Luego actualizamos con los nuevos datos
+            values = [df.columns.tolist()] + df.values.tolist()
+            body = {'values': values}
+            
+            result = sheet.values().update(
+                spreadsheetId=SPREADSHEET_ID,
+                range=RANGE2,
+                valueInputOption="USER_ENTERED",
+                body=body
+            ).execute()
+            return result
+        except Exception as e:
+            st.error(f"Error al actualizar: {str(e)}")
+            return None
+    else:
+        st.error("No hay datos para actualizar")
+        return None
 
-# Botón para leer
-if st.button("Analizar datos de Google Sheet"):  
+# Usar session state para mantener los datos entre rerenders
+if 'filtered_data' not in st.session_state:
+    st.session_state.filtered_data = None
+
+# Botón para cargar datos
+if st.button("Leer"):
     df = read_sheet()
-    st.header("Datos hoja1")
-    st.dataframe(df)
-    df_update = pd.DataFrame({
-        'Columna1': ['Nuevo1', 'Nuevo2', 'Nuevo3'],
-        'Columna2': [1, 2, 3],
-        'Columna3': ['A', 'B', 'C']
-    })
     
-    # Actualizar la hoja de cálculo
-    result = update_sheet(df_update)
-    st.header("Datos hoja2")
-    st.success(f"Hoja actualizada. {result.get('updatedCells')} celdas actualizadas.")
+    if not df.empty:
+        st.header("Datos Hoja1")
+        st.dataframe(df)
+        
+        filtro = df[
+            ((df['Municipio'] == 'Bello') | (df['Municipio'] == 'Medellin')) & 
+            ((df['Año'] == '2010') | (df['Año'] == '2017')) &  
+            ((df['Enfermedad'] == 'Enfermedades respiratorias')|(df['Enfermedad'] == 'Enfermedades circulatorias')) &
+            (df['Sexo'] == 'Hombres')
+        ]
+        
+       
+        st.session_state.filtered_data = filtro
 
-    # Mostrar el DataFrame actualizado
-    st.dataframe(df_update)
+        st.header('Filtros realizado')
+        st.dataframe(filtro)
+    else:
+        st.error("No se encontraron datos en la hoja de cálculo")
 
 
-
+if st.session_state.filtered_data is not None:
+    if st.button('Actualizar Hoja2'):
+        result = update_sheet(st.session_state.filtered_data)
+        if result:
+            st.success(f'Datos actualizados correctamente: {result["updatedCells"]} celdas.')
