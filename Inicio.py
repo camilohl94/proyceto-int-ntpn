@@ -7,7 +7,7 @@ st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 st.title("Proyecto Integrador: SportStock")
 
 # Imagen de fondo
-image = Image.open("static\proyecto integrador.png")
+image = Image.open("./static/proyecto_integrador.png")
 st.image(image, width=700, use_container_width=True)  
 
 # Integrantes
