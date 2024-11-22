@@ -33,7 +33,7 @@ with col3:
 with col4:
     st.image("./static/Dayana.png", width=150, use_container_width=True)  
     st.write("**Dayana Castro Villa**")
-    st.write("[Colaboradora]")
+    
 
 with col5:
     st.image("./static/camilo.png", width=123, use_container_width=True)  
@@ -48,7 +48,6 @@ st.write("""
 Tiene como objetivo principal optimizar la gestion de los productos, controlar el stock de articulos y mejorar la eficiencia operativa de la tienda.""" )
 
 
-# Footer con links
 st.markdown(
     """
     <div style="text-align: center; margin-top: 50px;">
