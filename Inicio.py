@@ -1,5 +1,7 @@
 import streamlit as st
 from PIL import Image
+import os
+
 
 st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 
@@ -23,22 +25,22 @@ with col1:
     st.write("[Colaborador]")
 
 with col2:
-    st.image("./static/Camiloj.png", width=123)  # Reemplaza con la ruta de la foto
+    st.image("./static/Camiloj.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Juan Camilo Hernandez]**")
     st.write("[Colaborador]")
     
 with col3:
-    st.image("./static/Duban.png", width=123)  # Reemplaza con la ruta de la foto
+    st.image("./static/Duban.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Duvan Sanchez]**")
     st.write("[Colaborador]")
     
 with col4:
-    st.image("./static/Dayana.png", width=150)  # Reemplaza con la ruta de la foto
+    st.image("./static/Dayana.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Dayana Castro Villa]**")
     st.write("[Colaboradora]")
     
 with col5:
-    st.image("./static/Bibiana.png", width=175)  # Reemplaza con la ruta de la foto
+    st.image("./static/Bibiana.png", width=200)  # Reemplaza con la ruta de la foto
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
 
