@@ -17,28 +17,30 @@ col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.image("./static/Juan-Carlos.png", width=200, use_container_width=True)  
-    st.write("**[Juan Carlos Garcia]**")
-    st.write("[Colaborador]")
+    st.write("**Juan Carlos Garcia**")
+   
 
 with col2:
-    st.image("./static/Camiloj.png", width=123, use_container_width=True)  
-    st.write("**[Juan Camilo Hernandez]**")
-    st.write("[Colaborador]")
+    st.image("./static/Bibiana.png", width=123, use_container_width=True)  
+    st.write("**Bibiana Machado**")
+    
 
 with col3:
     st.image("./static/Duban.png", width=123, use_container_width=True)  
-    st.write("**[Duvan Sanchez]**")
-    st.write("[Colaborador]")
+    st.write("**Duvan Sanchez**")
+    
 
 with col4:
     st.image("./static/Dayana.png", width=150, use_container_width=True)  
-    st.write("**[Dayana Castro Villa]**")
+    st.write("**Dayana Castro Villa**")
     st.write("[Colaboradora]")
 
 with col5:
-    st.image("./static/Bibiana.png", width=175, use_container_width=True)  
-    st.write("**[Bibiana Machado]**")
-    st.write("[Colaboradora]")
+    st.image("./static/camilo.png", width=123, use_container_width=True)  
+    st.write("**Juan Camilo Hernandez**")
+    
+
+    
 
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
