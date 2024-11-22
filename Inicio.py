@@ -16,27 +16,27 @@ st.header("Nuestro Equipo")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.image("static\Juan-Carlos.png", width=200, use_container_width=True)  
+    st.image("./static/Juan-Carlos.png", width=200, use_container_width=True)  
     st.write("**[Juan Carlos Garcia]**")
     st.write("[Colaborador]")
 
 with col2:
-    st.image("static\CamiloJ.png", width=123, use_container_width=True)  
+    st.image("./static/Camiloj.png", width=123, use_container_width=True)  
     st.write("**[Juan Camilo Hernandez]**")
     st.write("[Colaborador]")
 
 with col3:
-    st.image("static\Duban.png", width=123, use_container_width=True)  
+    st.image("./static/Duban.png", width=123, use_container_width=True)  
     st.write("**[Duvan Sanchez]**")
     st.write("[Colaborador]")
 
 with col4:
-    st.image("static\Dayana.png", width=150, use_container_width=True)  
+    st.image("./static/Dayana.png", width=150, use_container_width=True)  
     st.write("**[Dayana Castro Villa]**")
     st.write("[Colaboradora]")
 
 with col5:
-    st.image("static\Bibiana.png", width=175, use_container_width=True)  
+    st.image("./static/Bibiana.png", width=175, use_container_width=True)  
     st.write("**[Bibiana Machado]**")
     st.write("[Colaboradora]")
 
@@ -44,6 +44,7 @@ with col5:
 st.header("Sobre el Proyecto")
 st.write("""
 Tiene como objetivo principal optimizar la gestion de los productos, controlar el stock de articulos y mejorar la eficiencia operativa de la tienda.""" )
+
 
 # Footer con links
 st.markdown(
