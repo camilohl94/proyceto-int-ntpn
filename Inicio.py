@@ -21,22 +21,22 @@ with col1:
    
 
 with col2:
-    st.image("./static/Bibiana.png", width=123, use_container_width=True)  
+    st.image("./static/Bibiana.png", width=200, use_container_width=True)  
     st.write("**Bibiana Machado**")
     
 
 with col3:
-    st.image("./static/Duban.png", width=123, use_container_width=True)  
+    st.image("./static/Duban.png", width=200, use_container_width=True)  
     st.write("**Duvan Sanchez**")
     
 
 with col4:
-    st.image("./static/Dayana.png", width=150, use_container_width=True)  
+    st.image("./static/Dayana.png", width=200, use_container_width=True)  
     st.write("**Dayana Castro Villa**")
     
 
 with col5:
-    st.image("./static/camilo.png", width=123, use_container_width=True)  
+    st.image("./static/camilo.png", width=200, use_container_width=True)  
     st.write("**Juan Camilo Hernandez**")
     
 
