@@ -5,7 +5,7 @@ from google.oauth2 import service_account
 
 st.set_page_config(layout="wide")
 
-st.subheader("Filtrador de Datos del Metro de Medellín")
+st.subheader("Filtrador de Datos de Tasas de mortalidad según enfermedades respiratorias y circulatorias por la calidad del aire ")
 
 st.markdown(""" 
 Tasas de mortalidad según enfermedades respiratorias y circulatorias calculadas en el proyecto 
