@@ -8,7 +8,7 @@ st.title("Proyecto Integrador: SportStock")
 
 # Imagen de fondo
 image = Image.open("./static/logo.jpeg")
-st.image(image, width=700, use_container_width=True)  
+st.image(image, width=400, use_container_width=True)  
 
 # Integrantes
 st.header("Nuestro Equipo")
