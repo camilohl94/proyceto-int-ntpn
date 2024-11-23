@@ -75,14 +75,3 @@ if st.button("Solicitar Respuesta"):
     else:
         st.warning("Por favor, escribe una pregunta válida.")
 
-# Sugerir mantenimiento
-st.subheader("Sugerencias de Mantenimiento")
-st.write("La IA puede analizar el inventario y sugerir equipos que podrían necesitar mantenimiento.")
-if st.button("Analizar inventario"):
-    prompt_mantenimiento = f"""
-    Basándote en este inventario:
-    {equipos_gimnasio}
-    Sugiere qué equipos necesitan mantenimiento inmediato o reemplazo.
-    """
-    with st.spinner("Analizando..."):
-        sugerencias = generar_respuesta(prompt_mantenimiento, "")

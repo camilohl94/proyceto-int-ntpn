@@ -16,27 +16,27 @@ st.header("Nuestro Equipo")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.image("./static/Juan-Carlos.png", width=200, use_container_width=True)  
+    st.image("./static/Juan-Carlos.png", use_container_width=True)  
     st.write("**Juan Carlos Garcia**")
    
 
 with col2:
-    st.image("./static/Bibiana.png", width=200, use_container_width=True)  
+    st.image("./static/Bibiana.png",  use_container_width=True)  
     st.write("**Bibiana Machado**")
     
 
 with col3:
-    st.image("./static/Duban.png", width=200, use_container_width=True)  
+    st.image("./static/Duban.png", use_container_width=True)  
     st.write("**Duvan Sanchez**")
     
 
 with col4:
-    st.image("./static/Dayana.png", width=200, use_container_width=True)  
+    st.image("./static/Dayana.png", use_container_width=True)  
     st.write("**Dayana Castro Villa**")
     
 
 with col5:
-    st.image("./static/camilo.png", width=200, use_container_width=True)  
+    st.image("./static/camilo.png",  use_container_width=True)  
     st.write("**Juan Camilo Hernandez**")
     
 

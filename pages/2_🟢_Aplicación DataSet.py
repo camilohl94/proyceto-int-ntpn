@@ -61,13 +61,6 @@ with tad_descripcion:
     valores mínimo y máximo de las columnas numéricas (con df.describe()).
     Frecuencia de valores: El número de veces que aparece cada valor único
     en una columna categórica (con df['columna_categorica'].value_counts()).
-
-    ### Conclusión
-
-    -   Resumen de los resultados
-    -   Logros alcanzados
-    -   Dificultades encontradas
-    -   Aportes personales
     ''')    
 
 #----------------------------------------------------------
