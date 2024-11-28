@@ -162,13 +162,6 @@ with tab_Filtro_Final_Dinámico:
     for columna, valores in filtros.items():
         df_filtrado = df_filtrado[df_filtrado[columna].isin(valores)]
 
-    # Mostrar un resumen dinámico del DataFrame filtrado
-    st.write('Resumen del DataFrame filtrado:')
-    st.write(df_filtrado.describe())
-
-    # Mostrar la tabla de datos filtrados
-    st.write('Datos filtrados:')
-    st.dataframe(df_filtrado)
 
     # Mostrar gráficos y estadísticas relevantes
     st.write('Gráficos y estadísticas:')

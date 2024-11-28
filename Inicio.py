@@ -17,7 +17,7 @@ col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.image("./static/Juan-Carlos.png", use_container_width=True)  
-    st.write("**Juan Carlos Garcia**")
+    st.write("**Carlos Garcia**")
    
 
 with col2:
@@ -32,12 +32,12 @@ with col3:
 
 with col4:
     st.image("./static/Dayana.png", use_container_width=True)  
-    st.write("**Dayana Castro Villa**")
+    st.write("**Dayana Castro**")
     
 
 with col5:
     st.image("./static/camilo.png",  use_container_width=True)  
-    st.write("**Juan Camilo Hernandez**")
+    st.write("**Camilo Hernandez**")
     
 
     
